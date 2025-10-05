@@ -61,22 +61,30 @@ rows = row_counts[:,0] / (255 * canny.shape[1])
 
 El objetivo de esta tarea era **comparar los resultados del detector Sobel con Canny** realizando el mismo análisis de conteo de píxeles por filas y columnas.
 
-El proceso consistió en aplicar el filtro Sobel en ambas direcciones (x e y), convertir a 8 bits, y realizar el conteo similar al de Canny. Posteriormente se marcaron las filas y columnas significativas sobre la imagen original del mandril.
+El proceso consistió en:
+
+1. Realizar el conteo de píxeles por filas y columnas para ambos detectores de bordes (Sobel y Canny).
+2. Normalizar el número de blancos y encontrar los máximos para cada detector.
+3. **Visualizar ambas imágenes lado a lado** con sus respectivas estadísticas superpuestas.
+4. Marcar con líneas amarillas las posiciones que superan el 90% del máximo.
+5. Marcar con líneas rojas las posiciones de los máximos absolutos.
+6. Mostrar estadísticas comparativas entre ambos métodos.
 
 ### Fragmento de código
 
 ```python
-# Aplica el filtro Sobel en ambas direcciones para detectar bordes
-sobelx = cv2.Sobel(ggris, cv2.CV_64F, 1, 0)  # x
-sobely = cv2.Sobel(ggris, cv2.CV_64F, 0, 1)  # y
-sobel = cv2.add(sobelx, sobely)
+# Crea una figura con dos subplots para comparación visual
+plt.figure(figsize=(15, 6))
 
-# Conversión a byte con openCV
-sobel8 = cv2.convertScaleAbs(sobel)
+# Subplot 1: Imagen Sobel con estadísticas
+plt.subplot(1, 2, 1)
+plt.title("Sobel")
+plt.imshow(sobel8, cmap='gray')
 
-# Aplica un umbral para binarizar la imagen
-valorUmbral = 130
-_, imagenUmbralizada = cv2.threshold(gris, valorUmbral, 255, cv2.THRESH_BINARY)
+# Subplot 2: Imagen Canny con estadísticas  
+plt.subplot(1, 2, 2)
+plt.title("Canny")
+plt.imshow(canny, cmap='gray')
 ```
 
 ---
